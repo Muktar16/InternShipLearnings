@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var op = prompt(" 1.Addition\n 2.Substraction\n 3.Multiplication\n 4.Division\n 5.Modulous\n\n Enter your choice: ");
+        if(op==1){
+            var num1 = prompt("Enter first Number: ");
+            var num2 = prompt("Enter second number: ");
+            var sum = Number(num1)+Number(num2);
+            document.write("Sum = " + sum)
+        }
+        else if(op==2){
+            var num1 = prompt("Enter first Number: ");
+            var num2 = prompt("Enter second number: ");
+            var sub = Number(num1)-Number(num2);
+            document.write("Result = " + sub)
+        }
+        else if(op==3){
+            var num1 = prompt("Enter first Number: ");
+            var num2 = prompt("Enter second number: ");
+            var mul = Number(num1)*Number(num2);
+            document.write("Result = " + mul)
+        }
+        else if(op==4){
+            var num1 = prompt("Enter first Number: ");
+            var num2 = prompt("Enter second number: ");
+            var div = Number(num1)/Number(num2);
+            document.write("Result = " + div)
+        }
+        else if(op==5){
+            var num1 = prompt("Enter first Number: ");
+            var num2 = prompt("Enter second number: ");
+            var mod = Number(num1)%Number(num2);
+            document.write("Result = " + mod)
+        }
+        else{
+            document.write("Wrong Input. Refresh the page to try again.")
+        }
+    </script>
+</body>
+</html>
