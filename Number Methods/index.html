@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var num = "200";
+        var num2 = "20.45";
+        var num3 = 160.34;
+
+        console.log(Number('   123'))
+        console.log(typeof(Number('123')))
+        console.log(num3.toFixed(1))
+        console.log(num3.toPrecision(3))
+
+        console.log(typeof(num));
+        console.log(typeof(num2));
+        console.log(typeof(num3));
+
+        num = parseInt(num);
+        num2 = parseFloat(num2);
+        num3 = toString(num3);
+
+        console.log("")
+        console.log(typeof(num));
+        console.log(typeof(num2));
+        console.log(typeof(num3));
+        console.log("")
+        
+    </script>
+</body>
+</html>
