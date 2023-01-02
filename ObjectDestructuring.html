@@ -8,8 +8,15 @@
 </head>
 <body>
     <script>
-        var num = 0;
-        (num%2==0)?document.write("Even"):document.write("Odd");
+        let obj = {
+            name:"Muktar",
+            age:23,
+            gender:"Male"
+        }
+        let {name:n,age:a,gender:g} = obj;
+        console.log(n);
+        console.log(a);
+        console.log(g);
     </script>
 </body>
 </html>

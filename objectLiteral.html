@@ -8,8 +8,14 @@
 </head>
 <body>
     <script>
-        var num = 0;
-        (num%2==0)?document.write("Even"):document.write("Odd");
+        fistName = "Muktar "
+        lastName = "Hosen"
+        age = 23;
+        function getPersion(fistName,lastName,age){
+            fullname = fistName+lastName;
+            return {fullname,age}
+        }
+        console.log(getPersion(fistName,lastName))
     </script>
 </body>
 </html>
