@@ -13,7 +13,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     /* text-align: left; */
 } 
 
@@ -22,25 +22,26 @@
     font: inherit;
     cursor:pointer;
     padding: 1rem 2rem;
-    border: 1px solid #40005d;
+    border: 2px dotted #39c71d;
     background-color: #8117b3;
     color: white;
-    border-radius: 12px;
+    border-radius: 1rem;
     margin-right: 1rem;
 }
 
-.new-todo_actions button:hover,
-.new-todo_actions button:active{
+.new-todo_actions button:hover{
     background-color: #9c1bd8;
     border-color: #510674;
+}
+.new-todo_actions button:active{
+    background-color: #1b4dd8;
+    border-color: #290ccf;
 }
 
 .new-todo_actions button.alternative:hover,
 .new-todo_actions button.alternative:hover{
     background-color: #ddb3f8;
 }
-
-
 
 .inputField label{
     font-weight: bold;
