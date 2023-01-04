@@ -1,13 +1,11 @@
 import "./NewTodo.css";
+import React from 'react'
 
 function NewTodo(){
-    const addNewTodo = ()=>{
-
-    }
     return(
-        <>
+        
         <div className="new-todo">
-            <form onSubmit={addNewTodo}>
+            <form>
                 <div className="inputField-container">
                     <div className="inputField">
                         <label>ToDo Name</label>
@@ -27,7 +25,7 @@ function NewTodo(){
                 </div>
             </form>
         </div>
-        </>
+     
     )
 }
 

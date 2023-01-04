@@ -1,0 +1,39 @@
+.nav{
+    position: 'sticky';
+    top: 0;
+    z-Index: 1;
+    width: '100%';
+    column-gap: 1.5rem;
+}
+.nav-items {
+    display: flex;
+    list-style: none;
+    text-align: center;
+    width: 70vw;
+    justify-content: flex-start;
+    margin-right: 2rem;
+  }
+.heading{
+    text-align: center;
+    color: rgb(245, 235, 235);
+}
+
+.nav-item button {
+    text-decoration: none;
+    color: rgb(201, 63, 63);
+    font-size: 1.1rem;
+    margin-right: 2rem;
+    padding: 6px 16px;
+    border-radius: 5px;
+    height: 20px;
+    width: 30px;
+  }
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    height: 10vh;
+  }
+.link{
+    
+}
