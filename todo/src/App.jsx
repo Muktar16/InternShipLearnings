@@ -1,49 +1,33 @@
 
 import "./App.css";
 import React from 'react';
-import { Layout, theme,Space } from 'antd';
-import { BrowserRouter as Router, Link, Routes, Route } from "react-router-dom";
-import Home from './pages/home/Home';
-import NewTodo from './components/NewTodo/NewTodo';
+import { Layout, Button } from 'antd';
+import { HomeOutlined, PlusCircleOutlined} from '@ant-design/icons';
+import TodoList from "./components/TodoLIst/TodoList";
+
 
 const { Header, Content, Footer } = Layout;
 
 const App = () => {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
-
   return (
-    <Router>
     <Layout>
-      <nav>
-        <div className="nav-items">
-          <button><Link className="nav-item" to='/'>Home</Link></button>
-          <button><Link className="nav-item" to='/addnew'>Add New</Link></button>
-        </div>
-        <h1 className="heading">To Do List - Schedule Planner</h1>
-      </nav>
-      {/* <Header className="header">
-        <div className="nav-items">
-          <button><Link className="nav-item" to='/'>Home</Link></button>
-          <button><Link className="nav-item" to='/addnew'>Add New</Link></button>
-        </div>
-        <h1 className="heading">To Do List - Schedule Planner</h1>
-      </Header> */}
-      
-      <Content className="site-layout" style={{ display:"flex", width:'100%', padding: '2rem 2rem 0rem', } }>
-        <div style={{width:'100%', padding: 24, minHeight: 'auto', background: colorBgContainer }}>
-          <Routes>
-            <Route exact path="/" element={<Home/>}/>
-            <Route path="/addnew" element={<NewTodo/>}/>
-          </Routes>
-        </div>
-      </Content>
+        <Header style={{background:'#e1e9ed'}}>
+          <div style={{display:'inline-block',marginRight:'1.5rem'}}>
+            <HomeOutlined style={{color:'#3c4245'}}></HomeOutlined>
+            <Button type="link" primary>Home</Button>
+          </div>
 
-      <Footer style={{ textAlign: 'center' }}>ToDo List</Footer>
+          <div style={{display:'inline-block',marginRight:'1.5rem'}}>
+          <PlusCircleOutlined style={{color:'#3c4245'}}/>
+            <Button type="link" primary>Add new Task</Button>
+          </div>
+        </Header>
+        <Content>
+          <TodoList />
+        </Content>
+        <Footer>Footer</Footer>
+
     </Layout>
-    </Router>
-     
   );
 };
 
