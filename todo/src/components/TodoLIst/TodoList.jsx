@@ -1,54 +1,5 @@
 import React from 'react';
-import { Space, Table, Button } from 'antd';
-
-const columns = [
-    {
-      title: 'Name of the Task',
-      dataIndex: 'name',
-      key: 'name',
-      render: (text) => <th>{text},</th>
-    },
-    {
-      title: 'Priority',
-      dataIndex: 'priority',
-      key: 'priority',
-    },
-    {
-      title: 'Date',
-      dataIndex: 'date',
-      key: 'date',
-    },
-    // {
-    //   title: 'Tags',
-    //   key: 'tags',
-    //   dataIndex: 'tags',
-    //   render: (_, { tags }) => (
-    //     <>
-    //       {tags.map((tag) => {
-    //         let color = tag.length > 5 ? 'geekblue' : 'green';
-    //         if (tag === 'loser') {
-    //           color = 'volcano';
-    //         }
-    //         return (
-    //           <Tag color={color} key={tag}>
-    //             {tag.toUpperCase()}
-    //           </Tag>
-    //         );
-    //       })}
-    //     </>
-    //   ),
-    // },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (_, record) => (
-        <Space size="middle">
-          <Button type="primary">Edit</Button>
-          <Button type="danger">Delete</Button>
-        </Space>
-      ),
-    },
-  ];
+import { Card } from 'antd';
 
 
   const data = [
@@ -75,9 +26,14 @@ const columns = [
 
 function TodoList(){
     return(
-        <div>
-            <Table columns={columns} dataSource={data} />
-        </div>
+    <div className="site-card-border-less-wrapper">
+      <Card title="Card title" bordered={false} style={{minWidth:"800px"}}>
+        <p>Card content</p>
+        <p>Card content</p>
+        <p>Card content</p>
+      </Card>
+    </div>
+    
     )
 }
 
