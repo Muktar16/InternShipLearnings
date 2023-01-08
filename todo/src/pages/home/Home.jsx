@@ -1,10 +1,12 @@
 
 import "./Home.css";
-import React from 'react';
 import { Drawer} from 'antd';
 import {MenuOutlined} from '@ant-design/icons'
 import AppMenu from '../../components/AppMenu/AppMenu';
-import { useState } from 'react';
+import { useState} from 'react';
+import React from 'react';
+import TodoList from "../../components/TodoLIst/TodoList";
+
 
 
 function Home(){
@@ -12,24 +14,25 @@ function Home(){
   const [openMenu,setOpenMenu] = useState(false);
 
   return(
-    <div>
+    <>
+    <div className="nav-bar">
       <div 
         style={{
-          backgroundColor:'blueviolet', 
+          backgroundColor:'#010d14', 
           height:60,
           paddingTop:12,
           paddingLeft:12
         }}
+        className="menuIcon"
         >
           <MenuOutlined 
             style={{
               color:'white',
-              fontSize: 30
+              fontSize: 20
             }}
             onClick={()=>{
               setOpenMenu(true);
             }}
-            className="menuIcon"
         />
       </div>
       
@@ -42,12 +45,19 @@ function Home(){
           setOpenMenu(false);
         }}
         closable={false}
-        bodyStyle={{backgroundColor:'blueviolet'}}
+        bodyStyle={{backgroundColor:'#010d14'}}
         placement="left"
       >
         <AppMenu isInline></AppMenu>
       </Drawer>
     </div>
+
+    <div className="mainContainer">
+        <div className="middle-panel">
+          <TodoList></TodoList>
+        </div>
+    </div>
+    </>
   );
 }
 
