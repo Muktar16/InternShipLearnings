@@ -1,13 +1,28 @@
 
-import "./App.css";
 import React from 'react';
-import Home from "./pages/home/Home";
+import './App.css';
+import 'antd/dist/reset.css';
+
+import AppHeader from './components/Header/Header';
 
 
-const App = () => {
+import { Layout } from 'antd';
+const { Header, Content, Footer } = Layout;
+
+function App() {
   return (
-    <Home></Home>
+    <Layout className="mainLayout">
+      <Header>
+        <AppHeader/>
+      </Header>
+      {/* <Content>
+        <AppHome/>
+      </Content>
+      <Footer>
+        <AppFooter/>  
+      </Footer>       */}
+    </Layout>
   );
-};
+}
 
 export default App;
