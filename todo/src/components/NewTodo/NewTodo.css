@@ -1,0 +1,63 @@
+.new-todo{
+    background-color: #a892ee;
+    padding: 1rem;
+    margin: 2rem auto;
+    width: 50rem;
+    max-width: 95%;
+    border-radius: 1rem;
+    text-align: center;
+    box-shadow: 5px 5px rgb(91, 91, 165), 7px 7px rgb(145, 48, 48), 9px 9px rgb(74, 141, 74) 
+}
+
+.inputField-container{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    /* text-align: left; */
+} 
+
+
+.new-todo_actions button{
+    font: inherit;
+    cursor:pointer;
+    padding: 1rem 2rem;
+    border: 2px dotted #39c71d;
+    background-color: #8117b3;
+    color: white;
+    border-radius: 1rem;
+    margin-right: 1rem;
+}
+
+.new-todo_actions button:hover{
+    background-color: #9c1bd8;
+    border-color: #510674;
+}
+.new-todo_actions button:active{
+    background-color: #1b4dd8;
+    border-color: #290ccf;
+}
+
+.new-todo_actions button.alternative:hover,
+.new-todo_actions button.alternative:hover{
+    background-color: #ddb3f8;
+}
+
+.inputField label{
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.inputField input{
+    font: inherit;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 20rem;
+    max-width: 100%;
+}
+
+.new-expense_actions{
+    text-align: right;
+} 
