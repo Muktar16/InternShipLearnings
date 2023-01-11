@@ -2,7 +2,7 @@ import app from './app';
 import sequelize from './config/database';
 // import todo from './models/todo';
 
-// todo.sync({alter: true})
+// todo.sync({force: true})
 
 // Db connection
 sequelize

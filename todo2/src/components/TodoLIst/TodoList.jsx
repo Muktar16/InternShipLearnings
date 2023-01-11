@@ -1,167 +1,83 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Button, List, Modal, Row, Skeleton } from "antd";
-import PopUpForm from "../PopUpForm/PopUpForm";
+import { Button, List, Row, Skeleton,message } from "antd";
 import ModalForm from "../ModalForm/ModalForm";
 import moment from "moment";
-const count = 5;
-//const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat,picture&noinfo`;
+import axios from 'axios';
+const apiBaseUrl = `http://localhost:5432/api/v1`;
 
-const DemoTodos = [
-  {
-    id: "1",
-    name: "Assignment-1",
-    date: new Date(2022, 12, 2),
-    time: "8:40am",
-    note: "this is a short note about the task",
-  },
-  {
-    id: "2",
-    name: "Assignment-2",
-    date: new Date(2022, 12, 2),
-    time: "8:40am",
-    note: "this is a short note about the task",
-  },
-  {
-    id: "3",
-    name: "Assignment-3",
-    date: new Date(2022, 12, 2),
-    time: "8:40am",
-    note: "this is a short note about the task",
-  },
-  {
-    id: "1",
-    name: "Assignment-1",
-    date: new Date(2022, 12, 2),
-    time: "8:40am",
-    note: "this is a short note about the task",
-  },
-];
+const timeToDate = (time) => {
+  let tempTime = time.split(":");
+  let dt = new Date();
+  dt.setHours(tempTime[0]);
+  dt.setMinutes(tempTime[1]);
+  dt.setSeconds(tempTime[2]);
+  return dt;
+}
+
 
 const TodoList = () => {
-  const [isModalForm, setIsModalForm] = useState(false);
+
+  const [isEditFormActive,setIsEditFormActive] = useState(false);
+  const [itemCount,setItemCount] = useState(1);
+  const [itemToBeUpdated,setItemToBeUpdated] = useState([]);
+  const [isAddFormActive, setIsAddFormActive] = useState(false);
   const [initLoading, setInitLoading] = useState(false);
   const [loading, setLoading] = useState(false);
-  //const [data, setData] = useState(demoData);
-  const [list, setList] = useState(DemoTodos);
+  const [list, setList] = useState([]);
 
-  // useEffect(() => {
-  //     fetch(fakeDataUrl)
-  //         .then((res) => res.json())
-  //         .then((res) => {
-  //             setInitLoading(false);
-  //             setData(res.results);
-  //             setList(res.results);
-  //         });
-  // }, []);
+  useEffect(() => {
+    fetch(apiBaseUrl+"/todo/getAll")
+      .then((res) => res.json())
+      .then((res) => {
+        //sort according to time, then date
+        res.sort((a, b)=> a.time.localeCompare(b.time));
+        res.sort((a, b)=> ((new Date(a.date))-(new Date(b.date) )))
+        setInitLoading(false);
+        setList(res.slice(0,itemCount*5));
+    });
+  }, [itemCount]);
 
-  async function onLoadMore() {
-    setLoading(true);
-    setTimeout(() => { }, 10000);
-    setList(
-      list.concat([
-        {
-          id: "1",
-          name: "Assignment-1",
-          date: new Date(2022, 12, 2),
-          time: "8:40am",
-          note: "this is a short note about the task",
-        },
-        {
-          id: "1",
-          name: "Assignment-1",
-          date: new Date(2022, 12, 2),
-          time: "8:40am",
-          note: "this is a short note about the task",
-        },
-        {
-          id: "1",
-          name: "Assignment-1",
-          date: new Date(2022, 12, 2),
-          time: "8:40am",
-          note: "this is a short note about the task",
-        },
-        {
-          id: "1",
-          name: "Assignment-1",
-          date: new Date(2022, 12, 2),
-          time: "8:40am",
-          note: "this is a short note about the task",
-        },
-        {
-          id: "1",
-          name: "Assignment-1",
-          date: new Date(2022, 12, 2),
-          time: "8:40am",
-          note: "this is a short note about the task",
-        },
-      ])
-    );
-    setLoading(false);
-  }
-  // const onLoadMore = () => {
-  //     setLoading(true);
-  //     setList(
-  //         data.concat(
-  //             [...new Array(count)].map(() => ({
-  //                 loading: true,
-  //                 name: {},
-  //                 picture: {},
-  //             })),
-  //         ),
-  //     );
-  //     fetch(fakeDataUrl)
-  //         .then((res) => res.json())
-  //         .then((res) => {
-  //             const newData = data.concat(res.results);
-  //             setData(newData);
-  //             setList(newData);
-  //             setLoading(false);
-  //             // Resetting window's offsetTop so as to display react-virtualized demo underfloor.
-  //             // In real scene, you can using public method of react-virtualized:
-  //             // https://stackoverflow.com/questions/46700726/how-to-use-public-method-updateposition-of-react-virtualized
-  //             window.dispatchEvent(new Event('resize'));
-  //         });
-  // };
 
-  const loadMore =
-    !initLoading && !loading ? (
-      <div
-        style={{
-          textAlign: "center",
-          marginTop: 12,
-          height: 32,
-          lineHeight: "32px",
-        }}
-      >
-        <Button onClick={onLoadMore}>load more...</Button>
+  const loadMore = (!initLoading && !loading) ? (
+      <div style={{textAlign: "center", marginTop: 12, height: 32, lineHeight: "32px"}}>
+        <Button onClick={()=>setItemCount(itemCount+1)}>load more...</Button>
       </div>
     ) : null;
 
-    let itemToBeUpdated = null
-  const openEditForm = (item) => {
-    itemToBeUpdated = item;
-    setIsModalForm(true);
-  };
+
   const openDeletePopUp = (item) => {
     console.log("Delete button clicked", item);
   };
 
- const addButtonHandler = ()=>{
-    setIsModalForm(true);
- }
+  const updateTodo = async(updatedTodo)=>{
+    setIsEditFormActive(false)
+    updatedTodo.date = updatedTodo.date.toISOString().split('T')[0]
+    updatedTodo.time = moment(updatedTodo.time.toString()).format('LT');
+    const header = { 'Content-Type': 'application/json',"Access-Control-Allow-Origin": "*" };
+    const result = await axios.post(apiBaseUrl+'/todo/update',updatedTodo,{headers: header});
+    message.info('Updated Successfully');
+    setItemCount(itemCount);
+    console.log(result.data);
+  }
 
- const afterFormSubmision = (FormData)=>{
-    console.log(FormData);
-    setIsModalForm(false);
-    //setList(list.unshift(tempTodo));
- }
+  const saveTodo = async(newTodo)=>{
+    setIsAddFormActive(false);
+    newTodo.date = newTodo.date.toISOString().split('T')[0];
+    newTodo.time = moment(newTodo.time.toString()).format('LT');
+    const header = { 'Content-Type': 'application/json',"Access-Control-Allow-Origin": "*" };
+    const result = await axios.post(apiBaseUrl+'/todo/newtodo',newTodo,{headers: header});
+    message.info('Saved Successfully');
+    setItemCount(itemCount);
+    console.log(result.data);
+  }
 
   return (
     <>
-    {(isModalForm)?<ModalForm item={itemToBeUpdated} isModalOpen={true} callBackFunction={afterFormSubmision}></ModalForm>:null}
-    
+    {(isAddFormActive)?<ModalForm  modalTitle='Add New Task'  callBackFunction={saveTodo}></ModalForm>:null}
+    {(isEditFormActive)?<ModalForm modalTitle='Edit Assignment' item={itemToBeUpdated} callBackFunction={updateTodo}></ModalForm>:null}
+
       <Row justify="end">
-        <Button onClick={() => addButtonHandler()}>Add new</Button>
+        <Button onClick={() => setIsAddFormActive(true)}>Add new</Button>
       </Row>
       <List
         className="demo-loadmore-list"
@@ -172,7 +88,7 @@ const TodoList = () => {
         renderItem={(item) => (
           <List.Item
             actions={[
-              <a onClick={() => openEditForm(item)} key="edit">
+              <a onClick={() => {setItemToBeUpdated(item); setIsEditFormActive(true)}} key="edit">
                 Edit
               </a>,
               <a onClick={() => openDeletePopUp(item)} key="delete">
@@ -185,7 +101,7 @@ const TodoList = () => {
                 title={item.name}
                 description={`Due Date: ${moment(item.date.toString()).format(
                   "LL"
-                )} at ${item.time}`}
+                )} at ${moment(timeToDate(item.time)).format('LT')}`}
               />
               <div className="flex-div">{item.note}</div>
             </Skeleton>

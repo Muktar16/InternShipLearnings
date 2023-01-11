@@ -14,6 +14,7 @@ app.use(cors());
 app.use(helmet());
 app.use(morgan('tiny'));
 
+
 // Router
 app.get('/', (req, res, next) => {
   sendMessage(res, 'Welcome to node app :), Build by Morol');
