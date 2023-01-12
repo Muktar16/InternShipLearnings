@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Button, List, Row, Skeleton,message } from "antd";
 import ModalForm from "../ModalForm/ModalForm";
+import { timeToDate } from "../Helpers/helper";
 import moment from "moment";
 import axios from 'axios';
 const apiBaseUrl = `http://localhost:5432/api/v1`;
 
-const timeToDate = (time) => {
-  let tempTime = time.split(":");
-  let dt = new Date();
-  dt.setHours(tempTime[0]);
-  dt.setMinutes(tempTime[1]);
-  dt.setSeconds(tempTime[2]);
-  return dt;
-}
 
 
 const TodoList = () => {
@@ -21,29 +14,25 @@ const TodoList = () => {
   const [itemCount,setItemCount] = useState(1);
   const [itemToBeUpdated,setItemToBeUpdated] = useState([]);
   const [isAddFormActive, setIsAddFormActive] = useState(false);
-  const [initLoading, setInitLoading] = useState(false);
+  const [initLoading, setInitLoading] = useState(true);
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState([]);
+  const [effectController,setEffectController] = useState(true)
 
+ 
   useEffect(() => {
-    fetch(apiBaseUrl+"/todo/getAll")
-      .then((res) => res.json())
-      .then((res) => {
-        //sort according to time, then date
-        res.sort((a, b)=> a.time.localeCompare(b.time));
-        res.sort((a, b)=> ((new Date(a.date))-(new Date(b.date) )))
-        setInitLoading(false);
-        setList(res.slice(0,itemCount*5));
-    });
-  }, [itemCount]);
+    getTodoLIst();
+  }, [effectController,itemCount]);
 
-
-  const loadMore = (!initLoading && !loading) ? (
-      <div style={{textAlign: "center", marginTop: 12, height: 32, lineHeight: "32px"}}>
-        <Button onClick={()=>setItemCount(itemCount+1)}>load more...</Button>
-      </div>
-    ) : null;
-
+  const getTodoLIst = async()=>{
+    setInitLoading(true);
+    const result = await axios.get(apiBaseUrl+'/todo/getAll');
+    const fullList = result?.data;
+    fullList.sort((a, b)=> a.time.localeCompare(b.time));
+    fullList.sort((a, b)=> ((new Date(a.date))-(new Date(b.date) )))
+    setInitLoading(false);
+    setList(fullList.slice(0,itemCount*5))
+  }
 
   const openDeletePopUp = (item) => {
     console.log("Delete button clicked", item);
@@ -53,23 +42,33 @@ const TodoList = () => {
     setIsEditFormActive(false)
     updatedTodo.date = updatedTodo.date.toISOString().split('T')[0]
     updatedTodo.time = moment(updatedTodo.time.toString()).format('LT');
+    console.log("Updated Todo",updateTodo);
     const header = { 'Content-Type': 'application/json',"Access-Control-Allow-Origin": "*" };
-    const result = await axios.post(apiBaseUrl+'/todo/update',updatedTodo,{headers: header});
+    const result = await axios.put(apiBaseUrl+'/todo/update/'+itemToBeUpdated.id,updatedTodo,{headers: header});
+    setEffectController(!effectController);
     message.info('Updated Successfully');
-    setItemCount(itemCount);
     console.log(result.data);
   }
 
   const saveTodo = async(newTodo)=>{
+    console.log(newTodo)
     setIsAddFormActive(false);
     newTodo.date = newTodo.date.toISOString().split('T')[0];
     newTodo.time = moment(newTodo.time.toString()).format('LT');
     const header = { 'Content-Type': 'application/json',"Access-Control-Allow-Origin": "*" };
     const result = await axios.post(apiBaseUrl+'/todo/newtodo',newTodo,{headers: header});
     message.info('Saved Successfully');
-    setItemCount(itemCount);
+    setEffectController(!effectController);
     console.log(result.data);
   }
+
+
+  const loadMore = (!initLoading && !loading) ? (
+    <div style={{textAlign: "center", marginTop: 12, height: 32, lineHeight: "32px"}}>
+      <Button onClick={()=>setItemCount(itemCount+1)}>load more...</Button>
+    </div>
+  ) : null;
+
 
   return (
     <>
