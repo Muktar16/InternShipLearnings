@@ -1,23 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { Button, List, Row, Skeleton,message } from "antd";
+import { Button, List, Row, Skeleton,message, Popconfirm } from "antd";
 import ModalForm from "../ModalForm/ModalForm";
 import { timeToDate } from "../Helpers/helper";
 import moment from "moment";
 import axios from 'axios';
+import { counterContext1,counterContext2 } from "../../pages/home/Home";
+import { useContext } from "react";
 const apiBaseUrl = `http://localhost:5432/api/v1`;
 
 
-
 const TodoList = () => {
+
+  const taskCounter = useContext(counterContext1);
+  const deleteTaskCounter = useContext(counterContext2);
+  console.log( taskCounter, deleteTaskCounter);
 
   const [isEditFormActive,setIsEditFormActive] = useState(false);
   const [itemCount,setItemCount] = useState(1);
   const [itemToBeUpdated,setItemToBeUpdated] = useState([]);
   const [isAddFormActive, setIsAddFormActive] = useState(false);
   const [initLoading, setInitLoading] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const [list, setList] = useState([]);
-  const [effectController,setEffectController] = useState(true)
+  const [effectController,setEffectController] = useState(true);
+  const [itemToBeDelete,setItemToBeDelete] = useState();
 
  
   useEffect(() => {
@@ -28,15 +34,28 @@ const TodoList = () => {
     setInitLoading(true);
     const result = await axios.get(apiBaseUrl+'/todo/getAll');
     const fullList = result?.data;
+    taskCounter.setTaskCounter(fullList.length);
     fullList.sort((a, b)=> a.time.localeCompare(b.time));
     fullList.sort((a, b)=> ((new Date(a.date))-(new Date(b.date) )))
     setInitLoading(false);
     setList(fullList.slice(0,itemCount*5))
   }
 
-  const openDeletePopUp = (item) => {
-    console.log("Delete button clicked", item);
+  const confirm = async (e) => {
+     const result = await axios.put(apiBaseUrl+"/todo/recycleBin/"+itemToBeDelete.id);
+    if(result) {
+      taskCounter.setTaskCounter(taskCounter.taskCounter-1);
+      
+      message.success('Deleted Successfully');
+    }
+    
+    setEffectController(!effectController)
+    deleteTaskCounter.setDeleteTaskCounter(deleteTaskCounter.deleteTaskCounter+1);
   };
+  const cancel = (e) => {
+    console.log(e);
+  };
+
 
   const updateTodo = async(updatedTodo)=>{
     setIsEditFormActive(false)
@@ -57,13 +76,15 @@ const TodoList = () => {
     newTodo.time = moment(newTodo.time.toString()).format('LT');
     const header = { 'Content-Type': 'application/json',"Access-Control-Allow-Origin": "*" };
     const result = await axios.post(apiBaseUrl+'/todo/newtodo',newTodo,{headers: header});
+    taskCounter.setTaskCounter(taskCounter.taskCounter+1);
     message.info('Saved Successfully');
+    
     setEffectController(!effectController);
     console.log(result.data);
   }
 
 
-  const loadMore = (!initLoading && !loading) ? (
+  const loadMore = (!loading) ? (
     <div style={{textAlign: "center", marginTop: 12, height: 32, lineHeight: "32px"}}>
       <Button onClick={()=>setItemCount(itemCount+1)}>load more...</Button>
     </div>
@@ -74,10 +95,12 @@ const TodoList = () => {
     <>
     {(isAddFormActive)?<ModalForm  modalTitle='Add New Task'  callBackFunction={saveTodo}></ModalForm>:null}
     {(isEditFormActive)?<ModalForm modalTitle='Edit Assignment' item={itemToBeUpdated} callBackFunction={updateTodo}></ModalForm>:null}
+    
 
       <Row justify="end">
         <Button onClick={() => setIsAddFormActive(true)}>Add new</Button>
       </Row>
+      
       <List
         className="demo-loadmore-list"
         loading={initLoading}
@@ -87,12 +110,21 @@ const TodoList = () => {
         renderItem={(item) => (
           <List.Item
             actions={[
+
               <a onClick={() => {setItemToBeUpdated(item); setIsEditFormActive(true)}} key="edit">
                 Edit
               </a>,
-              <a onClick={() => openDeletePopUp(item)} key="delete">
-                Delete
-              </a>,
+
+            <Popconfirm
+                title="Delete the task"
+                description="Are you sure to delete this task?"
+                onConfirm={confirm}
+                onCancel={cancel}
+                okText="Yes"
+                cancelText="No"
+              >
+                <a onClick={()=>{setItemToBeDelete(item)}}>Move to Bin</a>
+              </Popconfirm> 
             ]}
           >
             <Skeleton avatar title={false} loading={loading} active>
