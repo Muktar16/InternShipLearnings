@@ -6,7 +6,7 @@ import moment from "moment";
 import axios from 'axios';
 import { counterContext1,counterContext2 } from "../../pages/home/Home";
 import { useContext } from "react";
-const apiBaseUrl = `http://localhost:5432/api/v1`;
+const apiBaseUrl = `http://192.168.0.140:5432/api/v1`;
 
 
 const TodoList = () => {

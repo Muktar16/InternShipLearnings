@@ -1,27 +1,59 @@
 import React from "react";
-import { Button, Layout, Menu, Tabs } from "antd";
-import { Link } from "react-router-dom";
-import { DeleteOutlined, GroupOutlined } from "@ant-design/icons";
-import { counterContext1, counterContext2 } from "../../pages/home/Home";
-import { useContext } from "react";
+import "./Topbar.css"
+import {AppBar,Toolbar,Typography,useTheme,useMediaQuery,Tab,Tabs, Avatar, Button} from '@mui/material'
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import { useState } from "react";
+import TodoList from "../TodoLIst/TodoList";
+import RecycleBin from "../RecycleBin/RecycleBin";
+import { textAlign } from "@mui/system";
+import AppDrawer from "../Drawar/Drawer";
 
-const { Header } = Layout;
+
 
 export default function Topbar() {
-  const taskCounter = useContext(counterContext1);
-  const deleteTaskCounter = useContext(counterContext2);
-  console.log("delete Count", deleteTaskCounter.deleteTaskCounter);
 
-
+  const [value,setValue] = useState(0);
+  const theme = useTheme();
+  console.log(theme)
+  const isMatch = useMediaQuery(theme.breakpoints.down('lg'))
+  console.log(isMatch)
+  
   return (
-    <Header style={{padding:0, position: 'sticky', top: 0, zIndex: 1, width: '100%' }}>
-        <Menu mode="horizontal" >
-          <Menu.Item key="upcoming"><Link to="/upcoming" />Upcoming Todos</Menu.Item>
-          <Menu.Item key="Recycle Bin"><Link to="/recycleBin" />Recycle Bin</Menu.Item>
-          <Menu.Item> <span>{taskCounter.taskCounter} </span> <GroupOutlined /> Tasks</Menu.Item>
-          <Menu.Item><span>{deleteTaskCounter.deleteTaskCounter} </span><DeleteOutlined/> Deleted</Menu.Item>
-        </Menu>
-    </Header>
+    <React.Fragment>
+      <AppBar sx={{background: '#457f8c'}}>
+        <Toolbar variant="dense" sx={{height:'115px'}}>
+        <Avatar sx={{height:'95px', width:'75px'}} alt="Logo" src="./logo2.png" variant="rounded"/>
+          <h1 className="logo-text">Chemistry<span>Lab</span><br />
+            <p className="logo-description">Natural Product Research Group</p>
+          </h1>
+            {isMatch?(<>
+              <AppDrawer></AppDrawer>
+            </>):(<>
+              <Tabs textColor="#2b2727" sx={{paddingLeft:'40px',}} value={value} indicatorColor="secondary" onChange={(e,value)=>setValue(value)}>
+              <Tab label="HOME" LinkComponent={<TodoList/>}/>
+              <Tab label="ABOUT US" LinkComponent={RecycleBin}><RecycleBin/></Tab>
+              <Tab label="PEOPLE"/>
+              <Tab label="PUBLICATIONS"/>
+              <Tab label="RESEARCH FACILITIES"/>
+            </Tabs>
+            <Button sx={{marginLeft:'auto '}} variant="contained">Login</Button>
+            <Button sx={{marginLeft:'10px'}} variant="contained">SignUp</Button>
+            </>)}
+            
+        
+        </Toolbar>
+        
+      </AppBar>
+    </React.Fragment>
+    // <Header justify='center' style={{padding:0 ,textAlign:'center', position: 'sticky', top: 0, width: '100%' }}>
+    //   <h1 style={{color:'white', paddingBottom:20}}>Task Management System</h1>
+    //     {/* <Menu mode="horizontal" >
+    //       <Menu.Item key="upcoming"><Link to="/upcoming" />Upcoming Todos</Menu.Item>
+    //       <Menu.Item key="Recycle Bin"><Link to="/recycleBin" />Recycle Bin</Menu.Item>
+    //       <Menu.Item> <span>{taskCounter.taskCounter} </span> <GroupOutlined /> Tasks</Menu.Item>
+    //       <Menu.Item><span>{deleteTaskCounter.deleteTaskCounter} </span><DeleteOutlined/> Deleted</Menu.Item>
+    //     </Menu> */}
+    // </Header>
     
   );
 }

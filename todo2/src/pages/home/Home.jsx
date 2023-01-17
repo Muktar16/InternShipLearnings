@@ -1,6 +1,5 @@
 import React from "react";
 import Topbar from "../../components/Topbar/Topbar";
-import TodoList from "../../components/TodoLIst/TodoList";
 import { Avatar, Badge, Layout, Row, Space, Tabs, theme } from "antd";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import RecycleBin from "../../components/RecycleBin/RecycleBin";
@@ -8,6 +7,8 @@ import { useState } from "react";
 import { createContext } from "react";
 import TabPane from "antd/es/tabs/TabPane";
 import { GroupOutlined,DeleteOutlined } from "@ant-design/icons";
+import ResponsiveAppBar from "../../components/ResponsiveAppBar/ResponsiveAppBar";
+import TodoList from "../../components/TodoLIst/TodoList";
 
 const { Content } = Layout;
 const counterContext1 = createContext();
@@ -40,7 +41,10 @@ export default function Home() {
         value={{ deleteTaskCounter, setDeleteTaskCounter }}
       >
         <Router>
+        {/* <ResponsiveAppBar></ResponsiveAppBar> */}
+        {/* <Topbar></Topbar> */}
           <Layout>
+          
             <Content className="site-layout" style={{ padding: "0 50px" }}>
               <div
                 style={{
@@ -49,7 +53,7 @@ export default function Home() {
                   background: colorBgContainer,
                 }}
               >
-                <Tabs tabBarExtraContent={operations}>
+                <Tabs style={{position:'static'}} tabBarExtraContent={operations}>
                   <TabPane tab={`Upcoming Task(${taskCounter})`} key="1">
                     <TodoList></TodoList>
                   </TabPane>
