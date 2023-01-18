@@ -1,13 +1,10 @@
 import React from "react";
 import "./Topbar.css"
-import {AppBar,Toolbar,Typography,useTheme,useMediaQuery,Tab,Tabs, Avatar, Button} from '@mui/material'
-import AssignmentIcon from '@mui/icons-material/Assignment';
+import {AppBar,Toolbar,useTheme,useMediaQuery,Tab,Tabs, Avatar, Button} from '@mui/material'
 import { useState } from "react";
 import TodoList from "../TodoLIst/TodoList";
 import RecycleBin from "../RecycleBin/RecycleBin";
-import { textAlign } from "@mui/system";
 import AppDrawer from "../Drawar/Drawer";
-
 
 
 export default function Topbar() {
@@ -54,6 +51,5 @@ export default function Topbar() {
     //       <Menu.Item><span>{deleteTaskCounter.deleteTaskCounter} </span><DeleteOutlined/> Deleted</Menu.Item>
     //     </Menu> */}
     // </Header>
-    
   );
 }

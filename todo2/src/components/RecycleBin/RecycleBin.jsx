@@ -3,17 +3,17 @@ import axios from "axios";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import { timeToDate } from "../Helpers/helper";
-import { counterContext1,counterContext2 } from "../../pages/home/Home";
+import { counterContext1, counterContext2 } from "../../pages/home/Home";
 
 const apiBaseUrl = `http://localhost:5432/api/v1`;
 
 export default function RecycleBin() {
 
-    const taskCounter = useContext(counterContext1);
+  const taskCounter = useContext(counterContext1);
   const deleteTaskCounter = useContext(counterContext2);
 
   const [initLoading, setInitLoading] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const [itemCount, setItemCount] = useState(1);
   const [list, setList] = useState([]);
   const [itemToBeDelete, setItemToBeDelete] = useState();
@@ -27,9 +27,7 @@ export default function RecycleBin() {
     setInitLoading(true);
     const result = await axios.get(apiBaseUrl + "/todo/getRecycleBinList");
     const fullList = result?.data;
-    console.log("recycle list size ",fullList.length)
     deleteTaskCounter.setDeleteTaskCounter(fullList.length);
-    console.log("counter-2 ",deleteTaskCounter.deleteTaskCounter)
     fullList.sort((a, b) => a.time.localeCompare(b.time));
     fullList.sort((a, b) => new Date(a.date) - new Date(b.date));
     setInitLoading(false);
@@ -47,12 +45,12 @@ export default function RecycleBin() {
     console.log(id);
     const result = await axios.put(apiBaseUrl + "/todo/restore/" + id);
     if (result) message.success("Restored Successfully");
-    deleteTaskCounter.setDeleteTaskCounter(deleteTaskCounter.deleteTaskCounter-1);
-    taskCounter.setTaskCounter(taskCounter.taskCounter+1);
+    deleteTaskCounter.setDeleteTaskCounter(deleteTaskCounter.deleteTaskCounter - 1);
+    taskCounter.setTaskCounter(taskCounter.taskCounter + 1);
     setEffectController(!effectController);
   };
 
-  const cancelRestore = async () => {};
+  const cancelRestore = async () => { };
 
   const confirm = async (e) => {
     const result = await axios.delete(
@@ -60,7 +58,7 @@ export default function RecycleBin() {
     );
     if (result) message.success("Deleted Successfully");
     setEffectController(!effectController);
-    deleteTaskCounter.setDeleteTaskCounter(deleteTaskCounter.deleteTaskCounter-1);
+    deleteTaskCounter.setDeleteTaskCounter(deleteTaskCounter.deleteTaskCounter - 1);
   };
   const cancel = (e) => {
     console.log(e);
