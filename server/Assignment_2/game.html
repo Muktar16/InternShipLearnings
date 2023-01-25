@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tower of Hanoi</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body>
+    <script src="scripts/myScript.js"></script>
+
+    <div id="mainContainer">
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+            </div>
+          </div>
+
+        <div class="left">
+            <div class="innerUpper">
+            </div>
+            <div class="innerLower">
+                <p class="p1">1</p>
+            </div>
+
+            <div class="buttons">
+                <button class="button" id="c1" onclick="changeBox(1, 2)">1->2</button>
+            </div>
+            <div class="buttons">
+                <button class="button" id="c1" onclick="changeBox(1, 3)">1->3</button>
+            </div>
+        </div>
+
+
+
+        <div class="center">
+            <div class="innerUpper"></div>
+            <div class="innerLower">
+                <p class="p1">2</p>
+            </div>
+
+            <div class="buttons">
+                <button class="button" id="c1" onclick="changeBox(2, 1)">2->1</button>
+            </div>
+
+            <div class="buttons">
+                <button class="button" id="c1" onclick="changeBox(2, 3)">2->3</button>
+            </div>
+        </div>
+
+
+
+        <div class="right">
+            <div class="innerUpper"></div>
+            <div class="innerLower">
+                <p class="p1">3</p>
+            </div>
+
+            <div class="buttons">
+                <button class="button" id="c1" onclick="changeBox(3, 1)">3->1</button>
+            </div>
+            <div class="buttons">
+                <button class="button" id="c1" onclick="changeBox(3, 2)">3->2</button>
+            </div>
+        </div>
+     
+        <div class="clearBoth"></div>
+
+        <div class="gameOption">
+            <div class="buttonsLower">
+                <button class="button" id="c2" onclick="starGame()">Start New Game</button>
+            </div>
+            <div class="buttonsLower">
+                <button class="button " id="c2" onclick="checkResult()">Result</button>
+            </div>
+        </div>
+     
+     </div>
+
+
+     
+</body>
