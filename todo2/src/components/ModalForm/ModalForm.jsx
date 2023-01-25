@@ -8,8 +8,9 @@ dayjs.extend(customParseFormat);
 
 const ModalForm = (props) => {
   const [form] = Form.useForm();
+  const item = {};
+  const [isModalOpen, setIsModalOpen] = useState(true);
 
-  let item = {};
   if (props.item) {
     form.setFieldsValue({
       name: props.item.name,
@@ -23,8 +24,6 @@ const ModalForm = (props) => {
     item.time = null;
     item.note = "";
   }
-
-  const [isModalOpen, setIsModalOpen] = useState(true);
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -42,57 +41,25 @@ const ModalForm = (props) => {
   };
 
   return (
-    <Modal
-      title={props.modalTitle}
-      open={isModalOpen}
-      footer={null}
-      onCancel={handleCancel}
-    >
-      <Form
-        form={form}
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="on"
-      >
-        <Form.Item
-          label="Task Title"
-          name="name"
-          rules={[
-            { required: true, message: "Please enter a title for your task" },
-          ]}
-        >
+    <Modal title={props.modalTitle} open={isModalOpen} footer={null} onCancel={handleCancel}>
+      <Form form={form} labelCol={{ span: 8 }} wrapperCol={{ span: 16 }} initialValues={{ remember: true }} onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete="on">
+        <Form.Item label="Task Title" name="name"
+          rules={[{required:true, message: "Please enter a title for your task"}]}>
           <Input />
         </Form.Item>
 
-        <Form.Item
-          label="Due Date"
-          name="date"
-          rules={[{ required: true, message: "Please set a due date" }]}
-        >
+        <Form.Item label="Due Date" name="date"
+          rules={[{ required: true, message: "Please set a due date" }]}>
           <DatePicker format="YYYY-MM-DD" style={{ width: "100%" }} />
         </Form.Item>
 
-        <Form.Item
-          label="Set Time"
-          name="time"
-          rules={[{ required: true, message: "Please set a time" }]}
-        >
+        <Form.Item label="Set Time" name="time"
+          rules={[{ required: true, message: "Please set a time" }]}>
           <TimePicker use12Hours format="h:mm a" style={{ width: "100%" }} />
         </Form.Item>
 
-        <Form.Item
-          label="Note"
-          name="note"
-          rules={[
-            {
-              required: true,
-              message: "Please enter a short note for your task",
-            },
-          ]}
-        >
+        <Form.Item label="Note" name="note"
+          rules={[{required: true, message: "Please enter a short note for your task"}]}>
           <Input />
         </Form.Item>
 

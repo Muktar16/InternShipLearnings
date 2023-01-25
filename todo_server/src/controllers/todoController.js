@@ -1,9 +1,11 @@
 
-import Todos from "../models/todo"
+import Todos from "../models/todo";
+import {validateAddTodo} from '../models/validations'
 
 
 export const addNewTodo = async(req,res,next) =>{
 
+    validateAddTodo.validate(req.body,{abortEarly:false})
     try {
         const result = await Todos.create(req.body);
         if(result){
@@ -16,7 +18,6 @@ export const addNewTodo = async(req,res,next) =>{
     } catch (error) {
         res.status(400).json({error: error});
     }
-
 }
 
 export const getAllTodo = async(req,res,next) => {
