@@ -23,5 +23,4 @@ adminSchema.methods.generateJwt = function () {
 }
 
 const Admin = mongoose.model('admin', adminSchema);
-
 export default Admin;

@@ -2,6 +2,7 @@
 import Admin from "../models/admin.js";
 
 export const authenticate = async(req,res) =>{
+  
     const email = req.body.email;
     const password = req.body.password;
     
@@ -9,11 +10,11 @@ export const authenticate = async(req,res) =>{
         if(user){
           console.log(user);
           if(!user.verifyPassword(password)){
-             return res.status(200).json({"status":"false", "message":"Wrong Password"});
+             return res.status(400).json({"status":false, "message":"Wrong Password"});
           }
-          else return res.status(200).json({"status":"true", "token": user.generateJwt()});
+          else return res.status(200).json({"status":true,"meassage":"Admin authenticated successfully", "token": user.generateJwt()});
         }
-        else return res.status(200).json({"status":"false","message":"This is not an Admin email"});
+        else return res.status(404).json({"status":false,"message":"This is not an Admin email"});
      }
     );
 }
