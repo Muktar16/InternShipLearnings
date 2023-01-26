@@ -1,11 +1,9 @@
 
 import Todos from "../models/todo";
-import {validateAddTodo} from '../models/validations'
 
 
-export const addNewTodo = async(req,res,next) =>{
 
-    validateAddTodo.validate(req.body,{abortEarly:false})
+export const addNewTodo = async(req,res) =>{
     try {
         const result = await Todos.create(req.body);
         if(result){

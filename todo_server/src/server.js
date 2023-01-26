@@ -1,12 +1,14 @@
 import app from './app';
 import sequelize from './config/database';
-// import todo from './models/todo';
+//import user from './models/user'
+//user.sync({force: true})
 
+//import todo from './models/todo';
 // todo.sync({force: true})
 
 // Db connection
 sequelize
-  //  .sync() // only use when you need to create table using model
+  //.sync()
   .authenticate()
   .then(() => {
     console.log('Connection has been established successfully.');
