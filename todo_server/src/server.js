@@ -1,7 +1,7 @@
 import app from './app';
 import sequelize from './config/database';
-//import user from './models/user'
-//user.sync({force: true})
+// import user from './models/user'
+// user.sync({force: true})
 
 //import todo from './models/todo';
 // todo.sync({force: true})

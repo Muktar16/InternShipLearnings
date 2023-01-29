@@ -1,4 +1,4 @@
-import { BOOLEAN, literal, STRING } from "sequelize";
+import { BOOLEAN, DATE, literal, STRING } from "sequelize";
 import sequelize from '../config/database';
 
 const Users = sequelize.define(
@@ -10,18 +10,21 @@ const Users = sequelize.define(
         is_delete: { type: BOOLEAN, defaultValue: false, allowNull: false},
         status:{
             type: STRING, 
-            //ENUM: ['Pending', 'Active'],
+            ENUM: ['Pending', 'Active'],
             defaultValue: 'Pending'
         },
         confirmationCode: { 
             type: STRING, 
             unique: true 
         },
+        otp_expire: {
+            type: DATE
+        },
         created_at: {
             type: 'TIMESTAMP',
             defaultValue: literal('CURRENT_TIMESTAMP'),
           },
-          updated_at: {
+        updated_at: {
             type: 'TIMESTAMP',
             defaultValue: literal('CURRENT_TIMESTAMP'),
         }

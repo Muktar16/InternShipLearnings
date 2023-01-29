@@ -9,7 +9,6 @@ const transport = nodemailer.createTransport({
 });
 
 export const sendConfirmationEmail = async (name, email, confirmationCode) => {
-    console.log("Helllllow")
     await transport.sendMail({
       from: process.env.EMAIL,
       to: email,
@@ -17,8 +16,8 @@ export const sendConfirmationEmail = async (name, email, confirmationCode) => {
       html: `<h1>Email Confirmation</h1>
           <h2>Hello ${name}</h2>
           <p>Thank you for subscribing. Please confirm your email by clicking on the following link</p>
-          <a href=http://localhost:4000/confirm/${confirmationCode}> Click here</a>
+          <a href=http://192.168.0.140:5432/api/v1/user/confirm?otp=${confirmationCode}> Click here</a>
           </div>`,
-    }).catch(err => console.log(err));
-    console.log(name, email, confirmationCode)
+    }).catch(err => {return false});
+    return true;
   };
