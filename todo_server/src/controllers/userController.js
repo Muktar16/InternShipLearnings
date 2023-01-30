@@ -12,7 +12,7 @@ export const signUp = async(req,res) => {
         //check if user already exists
         const user = await Users.findOne({where:{email: req.body.email}});
         if (user && user.status=="Active") {
-            return res.status(409).json({status:false,message:"Email already registered!! "})
+            return res.status(422).send('Email already registered!! Please log in')
         }
         // check if already pending user is saved
         else if(user && user.status=="Pending"){
@@ -25,16 +25,16 @@ export const signUp = async(req,res) => {
                 }
             ));
             if(!isMailSent){
-                return res.status(422).send("Oops!!! Something went wrong while sending confirmation mail. Please Try again.");
+                return res.status(422).send("Something went wrong while sending confirmation mail. Please Try again.");
             }
             else{
                 Users.update({otp_expire:Date.now()},{where:{confirmationCode:user.confirmationCode}})
-                return res.status(200).json({status:true,message:"You have already a pending request. We have resent a confirmation email."})
+                return res.status(200).send(`You have already a pending request. We have resent a confirmation email. <h1>Please check your email Inbox </h1> <a target="_blank" href="https://mail.google.com/mail/u/0/#inbox">goto email inbox<a>`)
             }
         }
 
         else if(!((await validate(req.body.email)).valid)){
-            return res.status(422).json({status:false,message:"This email address doesn't exist"})
+            return res.status(422).send("This email address doesn't exist. Please try with a valid email")
         }
 
         const newUser = {
@@ -50,17 +50,16 @@ export const signUp = async(req,res) => {
 
         let isMailSent = await sendConfirmationEmail(newUser.userName,newUser.email,newUser.confirmationCode);
         if(!isMailSent){
-            return res.status(422).send("Oops!!! Something went wrong while sending confirmation mail. Please Try again.")
+            return res.status(422).send("Something went wrong while sending confirmation mail. Please Try again.")
         }
         const result = await Users.create(newUser);
         if(result) {
-            return res.status(200).json({status:true,message:"User saved successfully. Please check your email to confirm registration"})
+            return res.status(200).send("User saved successfully. Please check your email to confirm registration")
         }
-         else res.status(422).json({status:false,message:"Registration failed. Please try again"});
+         else res.status(422).send("Registration failed. Please try again");
 
     } catch (error) {
-        console.log(error)
-        return res.status(500).json({status:false,message:"Something went wrong with the server"});
+        return res.status(422).send("Something went wrong with the server");
     }       
 }
 
@@ -77,9 +76,9 @@ export const confirmOTP = async(req,res) => {
             {status:"Active",otp_expire:null,confirmationCode:null},
             {where:{ confirmationCode: confirmationCode}}
         ).then(()=>{ 
-            res.status(201).json({status:true,message:"User otp Confirmed"})
+            res.status(200).json({status:true,message:"User otp Confirmed"})
         }).catch((e)=>{
-            res.status(400).json({status:false,message:"Error occured while updating user status"})
+            res.status(422).json({status:false,message:"Error occured while updating user status"})
             console.log(e)
         })
     }
@@ -101,13 +100,12 @@ export const resendOTP = async(req,res)=>{
             {otp_expire:Date.now()},
             {where:{ confirmationCode: confirmationCode}}
         ).then(()=>{ 
-            res.status(201).json({status:true,message:"Otp send to email"})
+            res.status(200).send("Otp send to email")
         }).catch((e)=>{
-            res.status(400).json({status:false,message:"Error occured while updating user status"})
-            console.log(e)
+            res.status(422).send("Error occured while updating user status")
         })
     }
-    else return res.send("User not found")
+    else return res.status(422).send("User not found")
 }
 
 
@@ -115,15 +113,13 @@ export const resendOTP = async(req,res)=>{
 export const signIn = async (req,res) => {
     const user = await Users.findOne({where:{email:req.body.email}});
     if(!user){
-        return res.status(422).json({status:false,message:"User not registered. Please sign up first"})
+        return res.status(422).send("User not registered. Please sign up first")
     }
     if ( user && user.status != "Active") {
-        return res.status(401).send({
-          message: "Pending Account. Please Verify Your Email!",
-        });
+        return res.status(422).send("Pending Account. Please Verify Your Email!");
     }
     if(user && bcrypt.compareSync(req.body.password,user.password)){
         return res.status(200).json({status:true,message:"Login Successfull",token:createJWT({user_id:user.id,email:user.email})})
     }
-    else return res.status(422).json({status:false,message:"Password Wrong"});
+    else return res.status(422).send("Password Wrong");
 }

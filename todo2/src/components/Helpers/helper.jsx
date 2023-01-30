@@ -1,5 +1,6 @@
 
 
+
 export const timeToDate = (time) => {
     let tempTime = time.split(":");
     let dt = new Date();
@@ -8,3 +9,4 @@ export const timeToDate = (time) => {
     dt.setSeconds(tempTime[2]);
     return dt;
 }
+

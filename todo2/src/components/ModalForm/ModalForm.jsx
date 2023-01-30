@@ -3,6 +3,7 @@ import { Button, Form, Input, DatePicker, TimePicker, Modal } from "antd";
 import { useState } from "react";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import moment from 'moment'
 
 dayjs.extend(customParseFormat);
 
@@ -50,7 +51,7 @@ const ModalForm = (props) => {
 
         <Form.Item label="Due Date" name="date"
           rules={[{ required: true, message: "Please set a due date" }]}>
-          <DatePicker format="YYYY-MM-DD" style={{ width: "100%" }} />
+          <DatePicker disabledDate={(current) => current.isBefore(moment())} format="YYYY-MM-DD" style={{ width: "100%" }} />
         </Form.Item>
 
         <Form.Item label="Set Time" name="time"
