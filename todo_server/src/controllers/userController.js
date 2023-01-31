@@ -116,10 +116,10 @@ export const signIn = async (req,res) => {
         return res.status(422).send("User not registered. Please sign up first")
     }
     if ( user && user.status != "Active") {
-        return res.status(422).send("Pending Account. Please Verify Your Email!");
+        return res.status(422).send(`Pending Account. Please Verify Your Email! <hr> <a target="_blank" href="https://mail.google.com/mail/u/0/#inbox">Goto email inbox<a>`);
     }
     if(user && bcrypt.compareSync(req.body.password,user.password)){
-        return res.status(200).json({status:true,message:"Login Successfull",token:createJWT({user_id:user.id,email:user.email})})
+        return res.status(200).send({status:true,message:"Login Successfull",token:createJWT({user_id:user.id,email:user.email})})
     }
     else return res.status(422).send("Password Wrong");
 }

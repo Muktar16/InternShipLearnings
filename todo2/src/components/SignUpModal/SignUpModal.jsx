@@ -6,7 +6,6 @@ import parse from 'html-react-parser';
 
 export default function SignUpModal(props) {
 
-    const [form] = Form.useForm();
     const [open,setOpen] = useState(true);
     const [loading,setLoading] = useState(false);
 
@@ -56,7 +55,7 @@ export default function SignUpModal(props) {
         
         <Modal open={open} onCancel={handleCancel} footer={false} title="Sign Up Form">
             <Spin spinning={loading}>
-            <Form form={form} labelCol={{ span: 8 }} wrapperCol={{ span: 16 }} initialValues={{ remember: true }} onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete="on">
+            <Form labelCol={{ span: 8 }} wrapperCol={{ span: 16 }} initialValues={{ remember: true }} onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete="on">
                 <Form.Item label="User Name" name="userName"
                     rules={[{required:true, message: "Please enter your user Name"}]}>
                     <Input type="text" placeholder="Username"/>
